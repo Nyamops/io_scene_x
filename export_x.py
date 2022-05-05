@@ -184,7 +184,7 @@ template SkinWeights {\n\
 
     def __CloseRootFrame(self):
         self.File.Unindent()
-        self.File.Write("} // End of Root\n")
+        self.File.Write("}\n")
 
     def __GatherAnimationGenerators(self):
         Generators = []
@@ -323,7 +323,7 @@ class ExportObject: # Base class, do not use
 
     def _CloseFrame(self):
         self.Exporter.File.Unindent()
-        self.Exporter.File.Write("}} // End of {}\n".format(self.SafeName))
+        self.Exporter.File.Write("}}\n".format(self.SafeName))
 
     def _WriteChildren(self):
         for Child in Util.SortByNameField(self.Children):
@@ -448,7 +448,7 @@ class MeshExportObject(ExportObject):
 
     def __WriteMesh(self, Mesh):
         self.Exporter.Log("Writing mesh vertices...")
-        self.Exporter.File.Write("Mesh {{ // {} mesh\n".format(self.SafeName))
+        self.Exporter.File.Write("Mesh {{\n".format(self.SafeName))
         self.Exporter.File.Indent()
 
         # Create the mesh enumerator based on options
@@ -533,7 +533,7 @@ class MeshExportObject(ExportObject):
             self.Exporter.Log("Done")
 
         self.Exporter.File.Unindent()
-        self.Exporter.File.Write("}} // End of {} mesh\n".format(self.SafeName))
+        self.Exporter.File.Write("}}\n".format(self.SafeName))
 
     def __WriteMeshNormals(self, Mesh, MeshEnumerator=None):
         # Since mesh normals only need their face counts and vertices per face
@@ -565,7 +565,7 @@ class MeshExportObject(ExportObject):
         if MeshEnumerator is None:
             MeshEnumerator = _NormalsMeshEnumerator(Mesh)
 
-        self.Exporter.File.Write("MeshNormals {{ // {} normals\n".format(
+        self.Exporter.File.Write("MeshNormals {{\n".format(
             self.SafeName))
         self.Exporter.File.Indent()
 
@@ -609,14 +609,14 @@ class MeshExportObject(ExportObject):
                 self.Exporter.File.Write(",\n", Indent=False)
 
         self.Exporter.File.Unindent()
-        self.Exporter.File.Write("}} // End of {} normals\n".format(
+        self.Exporter.File.Write("}}\n".format(
             self.SafeName))
 
     def __WriteMeshUVCoordinates(self, Mesh):
         if not Mesh.uv_layers:
             return
 
-        self.Exporter.File.Write("MeshTextureCoords {{ // {} UV coordinates\n" \
+        self.Exporter.File.Write("MeshTextureCoords {{\n" \
             .format(self.SafeName))
         self.Exporter.File.Indent()
 
@@ -644,7 +644,7 @@ class MeshExportObject(ExportObject):
                     self.Exporter.File.Write(",\n", Indent=False)
 
         self.Exporter.File.Unindent()
-        self.Exporter.File.Write("}} // End of {} UV coordinates\n".format(
+        self.Exporter.File.Write("}}\n".format(
             self.SafeName))
 
     def __WriteMeshMaterials(self, Mesh):
@@ -692,7 +692,7 @@ class MeshExportObject(ExportObject):
         if not Materials.keys():
             return
 
-        self.Exporter.File.Write("MeshMaterialList {{ // {} material list\n".
+        self.Exporter.File.Write("MeshMaterialList {{\n".
             format(self.SafeName))
         self.Exporter.File.Indent()
 
@@ -710,7 +710,7 @@ class MeshExportObject(ExportObject):
             WriteMaterial(self.Exporter, Material)
 
         self.Exporter.File.Unindent()
-        self.Exporter.File.Write("}} // End of {} material list\n".format(
+        self.Exporter.File.Write("}}\n".format(
             self.SafeName))
 
     def __WriteMeshActiveImageMaterials(self, Mesh):
@@ -759,7 +759,7 @@ class MeshExportObject(ExportObject):
         if not Materials.keys():
             return
 
-        self.Exporter.File.Write("MeshMaterialList {{ // {} material list\n".
+        self.Exporter.File.Write("MeshMaterialList {{\n".
             format(self.SafeName))
         self.Exporter.File.Indent()
 
@@ -792,7 +792,7 @@ class MeshExportObject(ExportObject):
             WriteMaterial(self.Exporter, Material)
 
         self.Exporter.File.Unindent()
-        self.Exporter.File.Write("}} // End of {} material list\n".format(
+        self.Exporter.File.Write("}}\n".format(
             self.SafeName))
 
     def __WriteMeshVertexColors(self, Mesh, MeshEnumerator=None):
@@ -811,7 +811,7 @@ class MeshExportObject(ExportObject):
             range(0,len(MeshEnumerator.vertices))]
         VertexColorCount = len(VertexColors)
 
-        self.Exporter.File.Write("MeshVertexColors {{ // {} vertex colors\n" \
+        self.Exporter.File.Write("MeshVertexColors {{\n" \
             .format(self.SafeName))
         self.Exporter.File.Indent()
         self.Exporter.File.Write("{};\n".format(VertexColorCount))
@@ -827,7 +827,7 @@ class MeshExportObject(ExportObject):
                 self.Exporter.File.Write(",\n", Indent=False)
 
         self.Exporter.File.Unindent()
-        self.Exporter.File.Write("}} // End of {} vertex colors\n".format(
+        self.Exporter.File.Write("}}\n".format(
             self.SafeName))
 
     def __WriteMeshSkinWeights(self, Mesh, MeshEnumerator=None):
@@ -960,7 +960,7 @@ class MeshExportObject(ExportObject):
                 Util.WriteMatrix(self.Exporter.File, BoneVertexGroup.BoneMatrix)
 
                 self.Exporter.File.Unindent()
-                self.Exporter.File.Write("}} // End of {} skin weights\n" \
+                self.Exporter.File.Write("}}\n" \
                     .format(BoneVertexGroup.SafeName))
 
 # Armature object implementation of ExportObject
@@ -1029,7 +1029,7 @@ class ArmatureExportObject(ExportObject):
 
     def __CloseBoneFrame(self, BoneSafeName):
         self.Exporter.File.Unindent()
-        self.Exporter.File.Write("}} // End of {}\n".format(BoneSafeName))
+        self.Exporter.File.Write("}}\n".format(BoneSafeName))
 
     def __WriteBoneChildren(self, Bone):
         self.__WriteBones(Util.SortByNameField(Bone.children))
@@ -1215,7 +1215,7 @@ class AnimationWriter:
                     KeyCount = CurrentAnimation.GetKeyCount()
 
                     # Write rotation keys
-                    self.Exporter.File.Write("AnimationKey { // Rotation\n");
+                    self.Exporter.File.Write("AnimationKey {\n");
                     self.Exporter.File.Indent()
                     self.Exporter.File.Write("0;\n")
                     self.Exporter.File.Write("{};\n".format(KeyCount))
@@ -1234,7 +1234,7 @@ class AnimationWriter:
                     self.Exporter.File.Write("}\n")
 
                     # Write scale keys
-                    self.Exporter.File.Write("AnimationKey { // Scale\n");
+                    self.Exporter.File.Write("AnimationKey {\n");
                     self.Exporter.File.Indent()
                     self.Exporter.File.Write("1;\n")
                     self.Exporter.File.Write("{};\n".format(KeyCount))
@@ -1253,7 +1253,7 @@ class AnimationWriter:
                     self.Exporter.File.Write("}\n")
 
                     # Write position keys
-                    self.Exporter.File.Write("AnimationKey { // Position\n");
+                    self.Exporter.File.Write("AnimationKey {\n");
                     self.Exporter.File.Indent()
                     self.Exporter.File.Write("2;\n")
                     self.Exporter.File.Write("{};\n".format(KeyCount))
@@ -1276,7 +1276,7 @@ class AnimationWriter:
                     self.Exporter.Log("Done")
 
             self.Exporter.File.Unindent()
-            self.Exporter.File.Write("}} // End of AnimationSet {}\n".format(
+            self.Exporter.File.Write("}}\n".format(
                 Set.SafeName))
             self.Exporter.Log("Done writing animation set {}".format(
                 Set.SafeName))
